@@ -1,24 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'RentaClick') }}</title>
+@extends('layouts.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
+<div class="container">
 
-</head>
-<body class="bg-light">
+    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Alquila lo que necesites</h1>
+            <p class="col-md-8 fs-5">
+                Encuentra productos en alquiler desde vehículos hasta herramientas, tecnología o cosas del hogar.
+            </p>
+            <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg">
+                Ver productos
+            </a>
+        </div>
+    </div>
 
-    @include('layouts.navbar')
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Publica tus productos</h5>
+                    <p class="card-text">Gana dinero alquilando cosas que no uses diariamente.</p>
+                </div>
+            </div>
+        </div>
 
-    <main class="py-4">
-        @yield('content')
-    </main>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Alquila rápido</h5>
+                    <p class="card-text">Busca, reserva y alquila productos en minutos.</p>
+                </div>
+            </div>
+        </div>
 
-    @include('layouts.footer')
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Seguro y confiable</h5>
+                    <p class="card-text">Sistema de usuarios y gestión de alquileres controlado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+</div>
+@endsection
