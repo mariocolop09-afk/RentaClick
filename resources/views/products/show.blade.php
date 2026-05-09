@@ -6,7 +6,7 @@
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card shadow-sm">
-                <img src="{{ $product->image_url ?? 'https://via.placeholder.com/600x400' }}" class="card-img-top" style="height: 350px; object-fit: cover;">
+            <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/600x400' }}">
             </div>
         </div>
 

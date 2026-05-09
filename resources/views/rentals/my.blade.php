@@ -15,6 +15,7 @@
                         <th>Fin</th>
                         <th>Total</th>
                         <th>Estado</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,13 +25,30 @@
                             <td>{{ $rental->start_date }}</td>
                             <td>{{ $rental->end_date }}</td>
                             <td>${{ $rental->total_price }}</td>
+
                             <td>
-                                <span class="badge bg-success">{{ $rental->status }}</span>
+                                @if($rental->status === 'active')
+                                    <span class="badge bg-success">Activo</span>
+                                @elseif($rental->status === 'canceled')
+                                    <span class="badge bg-danger">Cancelado</span>
+                                @else
+                                    <span class="badge bg-secondary">{{ $rental->status }}</span>
+                                @endif
+                            </td>
+
+                            <td>
+                                @if($rental->status === 'active')
+                                    <form action="{{ route('rentals.cancel', $rental->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="btn btn-sm btn-danger">Cancelar</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center">No tienes alquileres aún.</td>
+                            <td colspan="6" class="text-center">No tienes alquileres aún.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -23,7 +23,7 @@
         @forelse($products as $product)
             <div class="col-md-4">
                 <div class="card shadow-sm h-100">
-                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/400x250' }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/400x250' }}">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">{{ $product->title }}</h5>
                         <p class="card-text text-muted">{{ Str::limit($product->description, 80) }}</p>

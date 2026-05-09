@@ -40,6 +40,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/rentals/{product}', [RentalController::class, 'store'])->name('rentals.store');
     Route::get('/rentals/my', [RentalController::class, 'myRentals'])->name('rentals.my');
 
+
+    Route::patch('/rentals/{rental}/cancel', [RentalController::class, 'cancel'])->name('rentals.cancel');
+
+
+
+
+
+
+
 });
 
 require __DIR__.'/auth.php';

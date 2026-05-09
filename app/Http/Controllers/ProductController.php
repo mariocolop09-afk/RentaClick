@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Product;
 class ProductController extends Controller
@@ -25,26 +25,31 @@ class ProductController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:200',
-            'description' => 'required|string',
-            'price_per_day' => 'required|numeric|min:1',
-            'image_url' => 'nullable|string'
-        ]);
+        {
+            $request->validate([
+                'title' => 'required|string|max:200',
+                'description' => 'required|string',
+                'price_per_day' => 'required|numeric|min:1',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            ]);
 
-        Product::create([
-            'user_id' => auth()->id(),
-            'title' => $request->title,
-            'description' => $request->description,
-            'price_per_day' => $request->price_per_day,
-            'image_url' => $request->image_url,
-            'is_available' => true
-        ]);
+            $imagePath = null;
 
-        return redirect()->route('products.my')->with('success', 'Producto publicado correctamente.');
-    }
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('products', 'public');
+            }
 
+            Product::create([
+                'user_id' => auth()->id(),
+                'title' => $request->title,
+                'description' => $request->description,
+                'price_per_day' => $request->price_per_day,
+                'image' => $imagePath,
+                'is_available' => true
+            ]);
+
+            return redirect()->route('products.my')->with('success', 'Producto publicado correctamente.');
+        }
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
@@ -60,27 +65,34 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, Product $product)
-    {
-        if ($product->user_id !== auth()->id()) {
-            abort(403);
+        {
+            if ($product->user_id !== auth()->id()) {
+                abort(403);
+            }
+
+            $request->validate([
+                'title' => 'required|string|max:200',
+                'description' => 'required|string',
+                'price_per_day' => 'required|numeric|min:1',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            ]);
+
+            if ($request->hasFile('image')) {
+
+                if ($product->image && Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                }
+
+                $product->image = $request->file('image')->store('products', 'public');
+            }
+
+            $product->title = $request->title;
+            $product->description = $request->description;
+            $product->price_per_day = $request->price_per_day;
+            $product->save();
+
+            return redirect()->route('products.my')->with('success', 'Producto actualizado correctamente.');
         }
-
-        $request->validate([
-            'title' => 'required|string|max:200',
-            'description' => 'required|string',
-            'price_per_day' => 'required|numeric|min:1',
-            'image_url' => 'nullable|string'
-        ]);
-
-        $product->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'price_per_day' => $request->price_per_day,
-            'image_url' => $request->image_url,
-        ]);
-
-        return redirect()->route('products.my')->with('success', 'Producto actualizado correctamente.');
-    }
 
     public function destroy(Product $product)
     {

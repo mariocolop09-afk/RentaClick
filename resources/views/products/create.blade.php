@@ -5,8 +5,9 @@
     <div class="card shadow-sm p-4">
         <h3 class="fw-bold mb-3">Publicar producto</h3>
 
-        <form action="{{ route('products.store') }}" method="POST">
-            @csrf
+
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
             <div class="mb-3">
                 <label class="form-label">Título</label>
@@ -24,9 +25,9 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Imagen (URL)</label>
-                <input type="text" name="image_url" class="form-control">
-            </div>
+            <label class="form-label">Imagen</label>
+            <input type="file" name="image" class="form-control">
+            </div> 
 
             <button class="btn btn-success w-100">Publicar</button>
         </form>

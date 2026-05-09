@@ -5,7 +5,7 @@
     <div class="card shadow-sm p-4">
         <h3 class="fw-bold mb-3">Editar producto</h3>
 
-        <form action="{{ route('products.update', $product->id) }}" method="POST">
+<form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -25,8 +25,8 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Imagen (URL)</label>
-                <input type="text" name="image_url" class="form-control" value="{{ $product->image_url }}">
+            <label class="form-label">Imagen</label>
+            <input type="file" name="image" class="form-control">
             </div>
 
             <button class="btn btn-primary w-100">Guardar cambios</button>
