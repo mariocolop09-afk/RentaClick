@@ -1,61 +1,45 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::view('/login', 'auth.login')->name('login');
-Route::view('/register', 'auth.register')->name('register');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/products', function () {
-    return view('products.index', ['products' => collect()]);
-})->name('products.index');
 
-Route::get('/products/create', function () {
-    return view('products.create');
-})->name('products.create');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-Route::get('/products/my', function () {
-    return view('products.my', ['products' => collect()]);
-})->name('products.my');
 
-Route::get('/products/{id}', function ($id) {
-    return view('products.show', ['product' => (object)[
-        'id' => $id,
-        'title' => 'Producto Demo',
-        'description' => 'Descripción demo',
-        'price_per_day' => 10,
-        'image_url' => null,
-        'user' => (object)['name' => 'Usuario Demo']
-    ]]);
-})->name('products.show');
+Route::middleware('auth')->group(function () {
 
-Route::get('/products/{id}/edit', function ($id) {
-    return view('products.edit', ['product' => (object)[
-        'id' => $id,
-        'title' => 'Producto Demo',
-        'description' => 'Descripción demo',
-        'price_per_day' => 10,
-        'image_url' => null
-    ]]);
-})->name('products.edit');
+    // Profile (Breeze)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-Route::get('/profile', function () {
-    return view('profile.index');
-})->name('profile.index');
+    // Products CRUD
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
-Route::get('/rentals/my', function () {
-    return view('rentals.my', ['rentals' => collect()]);
-})->name('rentals.my');
+    Route::get('/products/my', [ProductController::class, 'myProducts'])->name('products.my');
 
-Route::post('/logout', function () {
-    return redirect()->route('home');
-})->name('logout');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 
-Route::post('/products', function () {})->name('products.store');
-Route::put('/products/{id}', function () {})->name('products.update');
-Route::delete('/products/{id}', function () {})->name('products.destroy');
-Route::post('/rentals/{id}', function () {})->name('rentals.store');
-Route::put('/profile', function () {})->name('profile.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Rentals
+    Route::post('/rentals/{product}', [RentalController::class, 'store'])->name('rentals.store');
+    Route::get('/rentals/my', [RentalController::class, 'myRentals'])->name('rentals.my');
+
+});
+
+require __DIR__.'/auth.php';

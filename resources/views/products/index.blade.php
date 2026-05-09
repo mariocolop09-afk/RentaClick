@@ -1,4 +1,7 @@
-@extends('layouts.app')
+@php
+    use Illuminate\Support\Str;
+@endphp
+@extends('layouts.bootstrap')
 
 @section('content')
 <div class="container">

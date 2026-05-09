@@ -24,7 +24,7 @@
                             {{ auth()->user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('profile.index') }}">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('products.my') }}">Mis Productos</a></li>
                             <li><a class="dropdown-item" href="{{ route('rentals.my') }}">Mis Alquileres</a></li>
                             <li><hr class="dropdown-divider"></li>
