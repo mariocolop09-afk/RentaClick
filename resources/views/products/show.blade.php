@@ -16,7 +16,22 @@
                 <p class="text-muted">{{ $product->description }}</p>
 
                 <p class="fs-4 fw-bold text-success">${{ $product->price_per_day }} / día</p>
+                <!-- reseña -->
 
+                                @php
+                    $avg = round($product->reviews->avg('rating'), 1);
+                @endphp
+
+                <p class="mb-1">
+                    <strong>Calificación:</strong>
+                    <span class="text-warning fw-bold">
+                        {{ $avg ? $avg : 'Sin reseñas' }}
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Total reseñas:</strong> {{ $product->reviews->count() }}
+                </p>
                 <p><strong>Publicado por:</strong> {{ $product->user->name ?? 'Usuario' }}</p>
 
                 @auth
@@ -37,6 +52,43 @@
                             Alquilar
                         </button>
                     </form>
+
+                    <!--FORM TO LEAVE A REVIEW-->
+                    <hr class="my-4">
+
+<h5 class="fw-bold">Dejar reseña</h5>
+
+@auth
+    <form action="{{ route('reviews.store', $product->id) }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label class="form-label">Calificación</label>
+            <select name="rating" class="form-select" required>
+                <option value="">Seleccionar</option>
+                <option value="1">⭐ 1</option>
+                <option value="2">⭐⭐ 2</option>
+                <option value="3">⭐⭐⭐ 3</option>
+                <option value="4">⭐⭐⭐⭐ 4</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Comentario</label>
+            <textarea name="comment" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button class="btn btn-warning w-100">Publicar reseña</button>
+    </form>
+@else
+    <div class="alert alert-warning">
+        Debes <a href="{{ route('login') }}">iniciar sesión</a> para dejar una reseña.
+    </div>
+@endauth
+
+
+
                 @else
                     <div class="alert alert-warning mt-4">
                         Debes <a href="{{ route('login') }}">iniciar sesión</a> para alquilar.
@@ -47,4 +99,23 @@
     </div>
 
 </div>
+<hr class="my-4">
+
+<h5 class="fw-bold">Reseñas</h5>
+
+@if($product->reviews->count() > 0)
+    @foreach($product->reviews as $review)
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h6 class="fw-bold mb-1">{{ $review->user->name }}</h6>
+                <p class="mb-1 text-warning">
+                    Calificación: {{ $review->rating }} ⭐
+                </p>
+                <p class="mb-0">{{ $review->comment }}</p>
+            </div>
+        </div>
+    @endforeach
+@else
+    <p class="text-muted">Aún no hay reseñas para este producto.</p>
+@endif
 @endsection

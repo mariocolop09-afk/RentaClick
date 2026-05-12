@@ -16,7 +16,9 @@ class Product extends Model
     'price_per_day',
     'image',
     'image_url',
+    'category_id',
     'is_available'
+
 ];
 
     public function user()
@@ -28,4 +30,18 @@ class Product extends Model
     {
         return $this->hasMany(Rental::class);
     }
+
+    public function category()
+{
+    return $this->belongsTo(Category::class);
+}
+public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
+public function averageRating()
+{
+    return $this->reviews()->avg('rating');
+}
 }

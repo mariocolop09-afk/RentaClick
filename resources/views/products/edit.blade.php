@@ -18,7 +18,17 @@
                 <label class="form-label">Descripción</label>
                 <textarea name="description" class="form-control" rows="4" required>{{ $product->description }}</textarea>
             </div>
-
+            <div class="mb-3">
+            <label class="form-label">Categoría</label>
+            <select name="category_id" class="form-select">
+                <option value="">-- Seleccionar --</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            </div>
             <div class="mb-3">
                 <label class="form-label">Precio por día</label>
                 <input type="number" name="price_per_day" class="form-control" value="{{ $product->price_per_day }}" required>

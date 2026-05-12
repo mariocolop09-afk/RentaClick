@@ -4,25 +4,34 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 class ProductController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Product::query()->where('is_available', true);
+   public function index(Request $request)
+{
+    $query = Product::query()
+    ->where('is_available', true)
+    ->withAvg('reviews', 'rating');
 
-        if ($request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+    if ($request->search) {
+        $query->where('title', 'like', '%' . $request->search . '%');
+    }
+
+    if ($request->category_id) {
+        $query->where('category_id', $request->category_id);
+    }
+
+    $products = $query->latest()->paginate(9);
+
+    $categories = Category::all();
+
+    return view('products.index', compact('products', 'categories'));
+}
+   public function create()
+        {
+            $categories = Category::all();
+            return view('products.create', compact('categories'));
         }
-
-        $products = $query->latest()->paginate(9);
-
-        return view('products.index', compact('products'));
-    }
-
-    public function create()
-    {
-        return view('products.create');
-    }
 
     public function store(Request $request)
         {
@@ -31,6 +40,7 @@ class ProductController extends Controller
                 'description' => 'required|string',
                 'price_per_day' => 'required|numeric|min:1',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+                'category_id' => 'nullable|exists:categories,id',
             ]);
 
             $imagePath = null;
@@ -45,6 +55,7 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'price_per_day' => $request->price_per_day,
                 'image' => $imagePath,
+                'category_id' => $request->category_id,
                 'is_available' => true
             ]);
 
@@ -52,17 +63,20 @@ class ProductController extends Controller
         }
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+       $product->load(['user', 'reviews.user']);
+
+    return view('products.show', compact('product'));
     }
 
-    public function edit(Product $product)
-    {
-        if ($product->user_id !== auth()->id()) {
-            abort(403);
-        }
-
-        return view('products.edit', compact('product'));
+   public function edit(Product $product)
+{
+    if ($product->user_id !== auth()->id()) {
+        abort(403);
     }
+
+    $categories = Category::all();
+    return view('products.edit', compact('product', 'categories'));
+}
 
     public function update(Request $request, Product $product)
         {
@@ -75,6 +89,7 @@ class ProductController extends Controller
                 'description' => 'required|string',
                 'price_per_day' => 'required|numeric|min:1',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+                'category_id' => 'nullable|exists:categories,id',
             ]);
 
             if ($request->hasFile('image')) {
@@ -89,6 +104,7 @@ class ProductController extends Controller
             $product->title = $request->title;
             $product->description = $request->description;
             $product->price_per_day = $request->price_per_day;
+            $product->category_id = $request->category_id;
             $product->save();
 
             return redirect()->route('products.my')->with('success', 'Producto actualizado correctamente.');
