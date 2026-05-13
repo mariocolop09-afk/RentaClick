@@ -15,6 +15,13 @@
 
             <ul class="navbar-nav ms-auto">
                 @auth
+
+                    @if(auth()->user()->is_admin)
+                        <li class="nav-item">
+                            <a class="nav-link text-warning fw-bold" href="{{ route('admin.dashboard') }}">Admin</a>
+                        </li>
+                    @endif
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('products.create') }}">Publicar</a>
                     </li>
@@ -36,6 +43,7 @@
                             </li>
                         </ul>
                     </li>
+
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>

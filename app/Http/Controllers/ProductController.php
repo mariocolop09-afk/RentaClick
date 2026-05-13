@@ -11,6 +11,7 @@ class ProductController extends Controller
 {
     $query = Product::query()
     ->where('is_available', true)
+    ->where('is_approved', true)
     ->withAvg('reviews', 'rating');
 
     if ($request->search) {
@@ -50,14 +51,15 @@ class ProductController extends Controller
             }
 
             Product::create([
-                'user_id' => auth()->id(),
-                'title' => $request->title,
-                'description' => $request->description,
-                'price_per_day' => $request->price_per_day,
-                'image' => $imagePath,
-                'category_id' => $request->category_id,
-                'is_available' => true
-            ]);
+    'user_id' => auth()->id(),
+    'title' => $request->title,
+    'description' => $request->description,
+    'price_per_day' => $request->price_per_day,
+    'category_id' => $request->category_id,
+    'image' => $imagePath,
+    'is_available' => true,
+    'is_approved' => false
+]);
 
             return redirect()->route('products.my')->with('success', 'Producto publicado correctamente.');
         }

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -44,6 +45,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/rentals/{rental}/cancel', [RentalController::class, 'cancel'])->name('rentals.cancel');
 
     Route::post('/reviews/{product}', [ReviewController::class, 'store'])->name('reviews.store');
+
+
+
+    Route::middleware('admin')->group(function () {
+
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    Route::patch('/admin/products/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
+
+    Route::patch('/admin/products/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
+
+    Route::patch('/admin/products/{product}/toggle', [AdminController::class, 'toggleAvailability'])->name('admin.products.toggle');
+
+});
 });
 
 
