@@ -6,7 +6,9 @@
 <div class="container">
 
     <h2 class="fw-bold mb-4">Panel Admin</h2>
-
+    <a href="{{ route('admin.reports') }}" class="btn btn-danger mb-3">
+    Ver Reportes
+</a>
     <div class="row g-4">
 
         <div class="col-md-12">

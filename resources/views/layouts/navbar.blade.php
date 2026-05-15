@@ -20,6 +20,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-warning fw-bold" href="{{ route('admin.dashboard') }}">Admin</a>
                         </li>
+                        @if(auth()->user()->is_admin)
+    <li class="nav-item">
+        <a class="nav-link text-warning fw-bold" href="{{ route('admin.reports') }}">Reportes</a>
+    </li>
+@endif
                     @endif
 
                     <li class="nav-item">

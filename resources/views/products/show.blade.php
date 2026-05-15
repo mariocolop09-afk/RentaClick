@@ -118,6 +118,38 @@
 @else
     <p class="text-muted">Aún no hay reseñas para este producto.</p>
 @endif
+<hr class="my-4">
+
+<h5 class="fw-bold text-danger">Reportar producto</h5>
+
+@auth
+    <form action="{{ route('reports.store', $product->id) }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label class="form-label">Motivo</label>
+            <select name="reason" class="form-select" required>
+                <option value="">Seleccionar</option>
+                <option value="Producto falso">Producto falso</option>
+                <option value="Estafa">Estafa</option>
+                <option value="Contenido inapropiado">Contenido inapropiado</option>
+                <option value="Precio engañoso">Precio engañoso</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button class="btn btn-danger w-100">Enviar reporte</button>
+    </form>
+@else
+    <div class="alert alert-warning">
+        Debes <a href="{{ route('login') }}">iniciar sesión</a> para reportar.
+    </div>
+@endauth
 <p><strong>Publicado por:</strong> {{ $product->user->name ?? 'Usuario' }}</p>
 @auth
     @if(auth()->id() !== $product->user_id)
