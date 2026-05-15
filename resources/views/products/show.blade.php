@@ -118,4 +118,17 @@
 @else
     <p class="text-muted">Aún no hay reseñas para este producto.</p>
 @endif
+<p><strong>Publicado por:</strong> {{ $product->user->name ?? 'Usuario' }}</p>
+@auth
+    @if(auth()->id() !== $product->user_id)
+        <form action="{{ route('chat.start', $product->user_id) }}" method="POST" class="mb-3">
+            @csrf
+            <button class="btn btn-outline-dark w-100">
+                Enviar mensaje al dueño
+            </button>
+        </form>
+    @endif
+@endauth
+
+
 @endsection
