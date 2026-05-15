@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RentalController;
@@ -22,6 +23,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 
 // Auth routes
 Route::middleware('auth')->group(function () {
+
+    // Chat
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])->name('chat.send');
+
+    Route::post('/chat/start/{user}', [ChatController::class, 'start'])->name('chat.start');
 
     // Profile (Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
