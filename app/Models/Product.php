@@ -44,4 +44,10 @@ public function averageRating()
 {
     return $this->reviews()->avg('rating');
 }
+
+public function reports()
+{
+    return $this->hasMany(Report::class);
+}
+
 }

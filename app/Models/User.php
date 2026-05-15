@@ -65,4 +65,10 @@ public function paymentsReceived()
 {
     return $this->hasMany(Payment::class, 'owner_id');
 }
+
+public function reports()
+{
+    return $this->hasMany(Report::class);
+}
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,9 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 
 // Auth routes
 Route::middleware('auth')->group(function () {
+
+    // Report routes
+    Route::post('/reports/{product}', [ReportController::class, 'store'])->name('reports.store');
 
     // Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
@@ -58,6 +62,9 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('admin')->group(function () {
+
+    Route::get('/admin/reports', [ReportController::class, 'adminIndex'])->name('admin.reports');
+    Route::patch('/admin/reports/{report}/resolve', [ReportController::class, 'resolve'])->name('admin.reports.resolve');
 
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
