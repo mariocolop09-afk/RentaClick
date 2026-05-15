@@ -34,6 +34,8 @@
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('products.my') }}">Mis Productos</a></li>
                             <li><a class="dropdown-item" href="{{ route('rentals.my') }}">Mis Alquileres</a></li>
+                            <li><a class="dropdown-item" href="{{ route('payments.my') }}">Mis Pagos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('payments.earnings') }}">Mis Ingresos</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">

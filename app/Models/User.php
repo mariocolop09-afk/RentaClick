@@ -56,5 +56,13 @@ public function reviews()
 {
     return $this->hasMany(Review::class);
 }
+public function paymentsMade()
+{
+    return $this->hasMany(Payment::class, 'payer_id');
+}
 
+public function paymentsReceived()
+{
+    return $this->hasMany(Payment::class, 'owner_id');
+}
 }

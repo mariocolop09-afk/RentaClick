@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Rental;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Payment;
+
 
 class RentalController extends Controller
 {
@@ -47,16 +49,25 @@ class RentalController extends Controller
     $days = $start->diffInDays($end) + 1;
     $total = $days * $product->price_per_day;
 
-    Rental::create([
-        'user_id' => auth()->id(),
-        'product_id' => $product->id,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'total_price' => $total,
-        'status' => 'active'
-    ]);
+    $rental = Rental::create([
+    'user_id' => auth()->id(),
+    'product_id' => $product->id,
+    'start_date' => $request->start_date,
+    'end_date' => $request->end_date,
+    'total_price' => $total,
+    'status' => 'active'
+]);
 
-    return redirect()->route('rentals.my')->with('success', 'Alquiler realizado correctamente.');
+Payment::create([
+    'rental_id' => $rental->id,
+    'payer_id' => auth()->id(),
+    'owner_id' => $product->user_id,
+    'amount' => $total,
+    'method' => 'cash',
+    'status' => 'paid'
+]);
+
+return redirect()->route('payments.my')->with('success', 'Alquiler realizado y pago registrado.');
 }
 
     public function myRentals()

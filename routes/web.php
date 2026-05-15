@@ -6,6 +6,7 @@ use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -57,7 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/products/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
 
     Route::patch('/admin/products/{product}/toggle', [AdminController::class, 'toggleAvailability'])->name('admin.products.toggle');
-
+Route::get('/payments/my', [PaymentController::class, 'myPayments'])->name('payments.my');
+Route::get('/payments/earnings', [PaymentController::class, 'myEarnings'])->name('payments.earnings');
 });
 });
 
