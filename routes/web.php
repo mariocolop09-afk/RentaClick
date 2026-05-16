@@ -25,6 +25,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 // Auth routes
 Route::middleware('auth')->group(function () {
 
+    // Dashboard
+    Route::get('/rentals/received', [RentalController::class, 'received'])->name('rentals.received');
+
+    Route::patch('/rentals/{rental}/finish', [RentalController::class, 'finish'])->name('rentals.finish');
+
+    Route::patch('/rentals/{rental}/cancel-owner', [RentalController::class, 'cancelByOwner'])->name('rentals.cancel.owner');
+
     // Report routes
     Route::post('/reports/{product}', [ReportController::class, 'store'])->name('reports.store');
 

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 
 
+
 class RentalController extends Controller
 {
     public function store(Request $request, Product $product)
@@ -92,10 +93,41 @@ public function cancel(Rental $rental)
     return redirect()->route('rentals.my')->with('success', 'Alquiler cancelado.');
 }
 
+public function received()
+{
+    $rentals = Rental::whereHas('product', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+        ->with(['product', 'user'])
+        ->latest()
+        ->get();
 
+    return view('rentals.received', compact('rentals'));
+}
 
+public function finish(Rental $rental)
+{
+    if ($rental->product->user_id !== auth()->id()) {
+        abort(403);
+    }
 
+    $rental->status = 'finished';
+    $rental->save();
 
+    return back()->with('success', 'Alquiler marcado como finalizado.');
+}
+
+public function cancelByOwner(Rental $rental)
+{
+    if ($rental->product->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $rental->status = 'canceled';
+    $rental->save();
+
+    return back()->with('success', 'Alquiler cancelado.');
+}
 
 
 }
