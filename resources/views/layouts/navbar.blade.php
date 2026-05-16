@@ -16,34 +16,55 @@
             <ul class="navbar-nav ms-auto">
                 @auth
 
+                    @php
+                        $unread = \App\Models\Notification::where('user_id', auth()->id())
+                            ->where('is_read', false)
+                            ->count();
+                    @endphp
+
                     @if(auth()->user()->is_admin)
                         <li class="nav-item">
                             <a class="nav-link text-warning fw-bold" href="{{ route('admin.dashboard') }}">Admin</a>
                         </li>
-                        @if(auth()->user()->is_admin)
-    <li class="nav-item">
-        <a class="nav-link text-warning fw-bold" href="{{ route('admin.reports') }}">Reportes</a>
-    </li>
-@endif
+
+                        <li class="nav-item">
+                            <a class="nav-link text-warning fw-bold" href="{{ route('admin.reports') }}">Reportes</a>
+                        </li>
                     @endif
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('products.create') }}">Publicar</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('notifications.index') }}">
+                            Notificaciones
+                            @if($unread > 0)
+                                <span class="badge bg-danger">{{ $unread }}</span>
+                            @endif
+                        </a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             {{ auth()->user()->name }}
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="{{ route('products.my') }}">Mis Productos</a></li>
                             <li><a class="dropdown-item" href="{{ route('rentals.my') }}">Mis Alquileres</a></li>
+                            <li><a class="dropdown-item" href="{{ route('rentals.received') }}">Alquileres Recibidos</a></li>
+
                             <li><a class="dropdown-item" href="{{ route('payments.my') }}">Mis Pagos</a></li>
                             <li><a class="dropdown-item" href="{{ route('payments.earnings') }}">Mis Ingresos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('chat.index') }}">Chat</a></li>
-                            <li><a class="dropdown-item" href="{{ route('rentals.received') }}">Alquileres Recibidos</a></li>
+
+                            <li><a class="dropdown-item" href="{{ route('chat.index') }}">Chat</a></li>
+
+                            <li><a class="dropdown-item" href="{{ route('notifications.index') }}">Mis Notificaciones</a></li>
+
                             <li><hr class="dropdown-divider"></li>
+
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
