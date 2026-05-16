@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Rental;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Models\Payment;
-
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 class RentalController extends Controller
@@ -15,7 +14,7 @@ class RentalController extends Controller
     public function store(Request $request, Product $product)
 {
     $request->validate([
-        'start_date' => 'required|date|after_or_equal:today',
+        'start_date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
         'end_date' => 'required|date|after_or_equal:start_date',
     ]);
 
@@ -27,7 +26,6 @@ class RentalController extends Controller
         return back()->with('error', 'No puedes alquilar tu propio producto.');
     }
 
-    // Validar choque de fechas (overlap)
     $existsRental = Rental::where('product_id', $product->id)
         ->where('status', 'active')
         ->where(function ($query) use ($request) {
@@ -51,24 +49,24 @@ class RentalController extends Controller
     $total = $days * $product->price_per_day;
 
     $rental = Rental::create([
-    'user_id' => auth()->id(),
-    'product_id' => $product->id,
-    'start_date' => $request->start_date,
-    'end_date' => $request->end_date,
-    'total_price' => $total,
-    'status' => 'active'
-]);
+        'user_id' => auth()->id(),
+        'product_id' => $product->id,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'total_price' => $total,
+        'status' => 'active'
+    ]);
 
-Payment::create([
-    'rental_id' => $rental->id,
-    'payer_id' => auth()->id(),
-    'owner_id' => $product->user_id,
-    'amount' => $total,
-    'method' => 'cash',
-    'status' => 'paid'
-]);
+    Payment::create([
+        'rental_id' => $rental->id,
+        'payer_id' => auth()->id(),
+        'owner_id' => $product->user_id,
+        'amount' => $total,
+        'method' => 'cash',
+        'status' => 'paid'
+    ]);
 
-return redirect()->route('payments.my')->with('success', 'Alquiler realizado y pago registrado.');
+    return redirect()->route('payments.my')->with('success', 'Alquiler realizado correctamente.');
 }
 
     public function myRentals()
