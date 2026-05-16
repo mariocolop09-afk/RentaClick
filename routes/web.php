@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProductController;
@@ -24,6 +25,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 
 // Auth routes
 Route::middleware('auth')->group(function () {
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readall');
 
     // Dashboard
     Route::get('/rentals/received', [RentalController::class, 'received'])->name('rentals.received');

@@ -6,6 +6,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Notification;
 
 class ChatController extends Controller
 {
@@ -75,6 +76,18 @@ class ChatController extends Controller
             'conversation_id' => $conversation->id,
             'sender_id' => $userId,
             'message' => $request->message
+        ]);
+
+        $receiverId = ($conversation->user1_id == $userId)
+    ? $conversation->user2_id
+    : $conversation->user1_id;
+
+        Notification::create([
+            'user_id' => $receiverId,
+            'title' => 'Nuevo mensaje',
+            'message' => 'Tienes un nuevo mensaje en el chat.',
+            'type' => 'message',
+            'is_read' => false
         ]);
 
         return back();

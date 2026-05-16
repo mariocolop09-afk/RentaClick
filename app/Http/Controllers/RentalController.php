@@ -7,6 +7,7 @@ use App\Models\Rental;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Notification;
 
 
 class RentalController extends Controller
@@ -67,6 +68,15 @@ class RentalController extends Controller
     ]);
 
     return redirect()->route('payments.my')->with('success', 'Alquiler realizado correctamente.');
+
+    Notification::create([
+    'user_id' => $product->user_id,
+    'title' => 'Nuevo alquiler',
+    'message' => 'Alguien alquiló tu producto: ' . $product->title,
+    'type' => 'rental',
+    'is_read' => false
+]);
+
 }
 
     public function myRentals()
