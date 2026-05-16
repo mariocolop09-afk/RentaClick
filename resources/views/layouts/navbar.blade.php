@@ -42,6 +42,7 @@
                             <li><a class="dropdown-item" href="{{ route('payments.my') }}">Mis Pagos</a></li>
                             <li><a class="dropdown-item" href="{{ route('payments.earnings') }}">Mis Ingresos</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('chat.index') }}">Chat</a></li>
+                            <li><a class="dropdown-item" href="{{ route('rentals.received') }}">Alquileres Recibidos</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
