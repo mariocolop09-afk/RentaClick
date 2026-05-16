@@ -32,7 +32,7 @@
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->title }}</td>
                                     <td>{{ $product->user->name ?? 'User' }}</td>
-                                    <td>${{ $product->price_per_day }}</td>
+                                    <td>Q{{ $product->price_per_day }}</td>
                                     <td>
                                         <form action="{{ route('admin.products.approve', $product->id) }}" method="POST" class="d-inline">
                                             @csrf

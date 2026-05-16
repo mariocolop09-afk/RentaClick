@@ -21,7 +21,7 @@
                     @forelse($payments as $payment)
                         <tr>
                             <td>{{ $payment->rental->product->title ?? 'Producto' }}</td>
-                            <td>${{ $payment->amount }}</td>
+                            <td>Q{{ $payment->amount }}</td>
                             <td>{{ strtoupper($payment->method) }}</td>
                             <td>
                                 @if($payment->status == 'paid')

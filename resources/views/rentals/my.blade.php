@@ -24,7 +24,7 @@
                             <td>{{ $rental->product->title ?? 'Producto' }}</td>
                             <td>{{ $rental->start_date }}</td>
                             <td>{{ $rental->end_date }}</td>
-                            <td>${{ $rental->total_price }}</td>
+                            <td>Q{{ $rental->total_price }}</td>
 
                             <td>
                                 @if($rental->status === 'active')

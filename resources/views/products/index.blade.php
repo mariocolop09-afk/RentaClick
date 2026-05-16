@@ -37,11 +37,13 @@
         @forelse($products as $product)
             <div class="col-md-4">
                 <div class="card shadow-sm h-100">
-                    <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/400x250' }}">
+                    <img src="{{ $product->image_url ?? ($product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/400x250') }}"
+                    class="card-img-top"
+                    style="height: 200px; object-fit: cover;">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">{{ $product->title }}</h5>
                         <p class="card-text text-muted">{{ Str::limit($product->description, 80) }}</p>
-                        <p class="fw-bold">${{ $product->price_per_day }} / día</p>
+                        <p class="fw-bold">Q{{ $product->price_per_day }} / día</p>
                         <p class="text-warning mb-2">
                         ⭐ {{ round($product->reviews_avg_rating, 1) ?? '0' }}
                         </p>

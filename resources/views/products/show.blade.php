@@ -6,7 +6,9 @@
     <div class="row g-4">
         <div class="col-md-6">
             <div class="card shadow-sm">
-            <img src="{{ $product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/600x400' }}">
+            <img src="{{ $product->image_url ?? ($product->image ? asset('storage/'.$product->image) : 'https://via.placeholder.com/800x400') }}"
+            class="img-fluid rounded shadow-sm mb-3"
+            style="max-height: 400px; width: 100%; object-fit: cover;">
             </div>
         </div>
 
@@ -15,7 +17,7 @@
                 <h2 class="fw-bold">{{ $product->title }}</h2>
                 <p class="text-muted">{{ $product->description }}</p>
 
-                <p class="fs-4 fw-bold text-success">${{ $product->price_per_day }} / día</p>
+                <p class="fs-4 fw-bold text-success">Q{{ $product->price_per_day }} / día</p>
                 <!-- reseña -->
 
                                 @php

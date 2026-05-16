@@ -6,7 +6,7 @@
     <h2 class="fw-bold mb-3">Mis Ingresos</h2>
 
     <div class="alert alert-success">
-        <strong>Total ganado:</strong> ${{ $total }}
+        <strong>Total ganado:</strong> Q{{ $total }}
     </div>
 
     <div class="card shadow-sm">
@@ -27,7 +27,7 @@
                         <tr>
                             <td>{{ $payment->rental->product->title ?? 'Producto' }}</td>
                             <td>{{ $payment->payer->name ?? 'Cliente' }}</td>
-                            <td>${{ $payment->amount }}</td>
+                            <td>Q{{ $payment->amount }}</td>
                             <td>{{ strtoupper($payment->method) }}</td>
                             <td>
                                 @if($payment->status == 'paid')
