@@ -80,9 +80,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/admin/products/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
 
     Route::patch('/admin/products/{product}/toggle', [AdminController::class, 'toggleAvailability'])->name('admin.products.toggle');
+
+
+});
+
 Route::get('/payments/my', [PaymentController::class, 'myPayments'])->name('payments.my');
 Route::get('/payments/earnings', [PaymentController::class, 'myEarnings'])->name('payments.earnings');
-});
 });
 
 
