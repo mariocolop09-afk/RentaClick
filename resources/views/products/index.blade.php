@@ -50,6 +50,12 @@
                         <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary w-100">
                             Ver detalle
                         </a>
+                        @auth
+                        <form action="{{ route('favorites.store', $product->id) }}" method="POST" class="mt-2">
+                        @csrf
+                       <button class="btn btn-outline-danger w-100 btn-sm">❤️ Favorito</button>
+                        </form>
+                        @endauth
                     </div>
                 </div>
             </div>

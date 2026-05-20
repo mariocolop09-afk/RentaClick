@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Product;
 use App\Models\Review;
-<<<<<<< HEAD
-
-=======
->>>>>>> 33c95b4f71250ce65ae98ebff77a65bf32d2979f
 use Illuminate\Http\Request;
+
 class ReviewController extends Controller
 {
     public function store(Request $request, Product $product)
@@ -33,9 +31,5 @@ class ReviewController extends Controller
         ]);
 
         return back()->with('success', 'Reseña publicada correctamente.');
+    }
 }
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> 33c95b4f71250ce65ae98ebff77a65bf32d2979f

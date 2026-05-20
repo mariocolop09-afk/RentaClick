@@ -164,5 +164,29 @@
     @endif
 @endauth
 
+@auth
+    @php
+        $isFavorite = \App\Models\Favorite::where('user_id', auth()->id())
+            ->where('product_id', $product->id)
+            ->exists();
+    @endphp
+
+    @if(!$isFavorite)
+        <form action="{{ route('favorites.store', $product->id) }}" method="POST" class="mb-3">
+            @csrf
+            <button class="btn btn-outline-danger w-100">
+                ❤️ Agregar a Favoritos
+            </button>
+        </form>
+    @else
+        <form action="{{ route('favorites.destroy', $product->id) }}" method="POST" class="mb-3">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger w-100">
+                ❌ Quitar de Favoritos
+            </button>
+        </form>
+    @endif
+@endauth
 
 @endsection
