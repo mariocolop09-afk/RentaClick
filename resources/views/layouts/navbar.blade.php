@@ -83,6 +83,7 @@
                             <li><a class="dropdown-item" href="{{ route('payments.my') }}">Mis Pagos</a></li>
                             <li><a class="dropdown-item" href="{{ route('payments.earnings') }}">Mis Ingresos</a></li>
                             <li><a class="dropdown-item" href="{{ route('favorites.index') }}">Mis Favoritos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('contracts.index') }}">Mis Contratos</a></li>
 
                             <li><hr class="dropdown-divider"></li>
 

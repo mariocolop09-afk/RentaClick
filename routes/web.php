@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
@@ -26,6 +27,10 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 
 // Auth routes
 Route::middleware('auth')->group(function () {
+
+    // Contracts
+    Route::get('/contracts', [ContractController::class, 'index'])->name('contracts.index');
+    Route::get('/contracts/{contract}', [ContractController::class, 'show'])->name('contracts.show');
 
     // Favorites
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');

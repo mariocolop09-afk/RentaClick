@@ -8,6 +8,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Notification;
+use App\Models\Contract;
 
 
 class RentalController extends Controller
@@ -67,7 +68,28 @@ class RentalController extends Controller
         'status' => 'paid'
     ]);
 
-    return redirect()->route('payments.my')->with('success', 'Alquiler realizado correctamente.');
+    Contract::create([
+    'rental_id' => $rental->id,
+    'owner_id' => $product->user_id,
+    'renter_id' => auth()->id(),
+    'product_id' => $product->id,
+
+    'start_date' => $request->start_date,
+    'end_date' => $request->end_date,
+
+    'price_per_day' => $product->price_per_day,
+    'total_price' => $total,
+
+    'terms' => "1. El arrendatario se compromete a cuidar el producto.\n
+2. Si el producto se entrega dañado, el arrendatario será responsable.\n
+3. El producto debe devolverse en la fecha acordada.\n
+4. El pago se realiza según lo indicado en la plataforma.\n
+5. Ambas partes aceptan estos términos.",
+
+    'status' => 'active'
+]);
+
+    return redirect()->route('contracts.index')->with('success', 'Alquiler realizado y contrato generado.');
 
     Notification::create([
     'user_id' => $product->user_id,

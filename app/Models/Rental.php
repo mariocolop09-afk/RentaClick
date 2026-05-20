@@ -34,4 +34,9 @@ class Rental extends Model
 {
     return $this->hasOne(Payment::class);
 }
+
+public function contract()
+{
+    return $this->hasOne(Contract::class);
+}
 }
