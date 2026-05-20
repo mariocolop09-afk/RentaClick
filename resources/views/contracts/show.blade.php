@@ -42,8 +42,8 @@
 
         <h5 class="fw-bold">4. Precio</h5>
         <p>
-            <strong>Precio por día:</strong> ${{ $contract->price_per_day }} <br>
-            <strong>Total:</strong> ${{ $contract->total_price }}
+            <strong>Precio por día:</strong> Q{{ $contract->price_per_day }} <br>
+            <strong>Total:</strong> Q{{ $contract->total_price }}
         </p>
 
         <hr>
