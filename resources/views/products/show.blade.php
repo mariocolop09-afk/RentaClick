@@ -50,6 +50,49 @@
                             <input type="date" name="end_date" class="form-control" required>
                         </div>
 
+                        <hr>
+
+                        <h5 class="fw-bold">Método de pago</h5>
+
+                        <div class="mb-3">
+                        <select name="payment_method" id="payment_method" class="form-select" required>
+                        <option value="">Seleccionar método</option>
+                        <option value="cash">Efectivo</option>
+                        <option value="card">Tarjeta</option>
+                        </select>
+                        </div>
+
+                        <div id="card-fields" style="display:none;">
+
+                            <div class="mb-3">
+                            <label class="form-label">Nombre del titular</label>
+                            <input type="text" name="card_name" class="form-control">
+                            </div>
+
+                            <div class="mb-3">
+                            <label class="form-label">Número de tarjeta</label>
+                            <input type="text" name="card_number" class="form-control" placeholder="1234 5678 9012 3456">
+                            </div>
+
+                            <div class="row">
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">Expiración</label>
+                            <input type="text" name="card_expiry" class="form-control" placeholder="MM/YY">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">CVV</label>
+                            <input type="password" name="card_cvv" class="form-control" placeholder="123">
+                            </div>
+                            </div>
+                            </div>
+
+                            <div class="alert alert-info">
+                            Pago simulado. No se procesan tarjetas reales.
+                            </div>
+
+                            </div>
+
                         <button class="btn btn-primary w-100">
                             Alquilar
                         </button>
@@ -190,3 +233,24 @@
 @endauth
 
 @endsection
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const paymentMethod = document.getElementById('payment_method');
+    const cardFields = document.getElementById('card-fields');
+
+    paymentMethod.addEventListener('change', function () {
+
+        if (this.value === 'card') {
+            cardFields.style.display = 'block';
+        } else {
+            cardFields.style.display = 'none';
+        }
+
+    });
+
+});
+
+</script>

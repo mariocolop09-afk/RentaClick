@@ -22,7 +22,11 @@
                         <tr>
                             <td>{{ $payment->rental->product->title ?? 'Producto' }}</td>
                             <td>Q{{ $payment->amount }}</td>
-                            <td>{{ strtoupper($payment->method) }}</td>
+                            @if($payment->method === 'card')
+                            💳 {{ $payment->card_brand }} ****{{ $payment->card_last4 }}
+                            @else
+                            💵 EFECTIVO
+                            @endif
                             <td>
                                 @if($payment->status == 'paid')
                                     <span class="badge bg-success">Pagado</span>

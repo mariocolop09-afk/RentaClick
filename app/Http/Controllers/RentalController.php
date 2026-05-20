@@ -16,8 +16,15 @@ class RentalController extends Controller
     public function store(Request $request, Product $product)
 {
     $request->validate([
-        'start_date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
-        'end_date' => 'required|date|after_or_equal:start_date',
+    'start_date' => 'required|date',
+    'end_date' => 'required|date|after:start_date',
+
+    'payment_method' => 'required|in:cash,card',
+
+    'card_name' => 'required_if:payment_method,card',
+    'card_number' => 'required_if:payment_method,card',
+    'card_expiry' => 'required_if:payment_method,card',
+    'card_cvv' => 'required_if:payment_method,card',
     ]);
 
     if (!$product->is_available) {
@@ -59,12 +66,37 @@ class RentalController extends Controller
         'status' => 'active'
     ]);
 
+    $cardBrand = null;
+    $cardLast4 = null;
+
+    if ($request->payment_method === 'card') {
+
+    $number = preg_replace('/\s+/', '', $request->card_number);
+
+    $cardLast4 = substr($number, -4);
+
+    if (str_starts_with($number, '4')) {
+        $cardBrand = 'Visa';
+    } elseif (str_starts_with($number, '5')) {
+        $cardBrand = 'MasterCard';
+    } else {
+        $cardBrand = 'Tarjeta';
+    }
+    }
+
     Payment::create([
         'rental_id' => $rental->id,
         'payer_id' => auth()->id(),
         'owner_id' => $product->user_id,
         'amount' => $total,
-        'method' => 'cash',
+        'method' => $request->payment_method,
+        'card_name' => $request->payment_method === 'card'
+        ? $request->card_name
+        : null,
+
+        'card_last4' => $cardLast4,
+
+        'card_brand' => $cardBrand,
         'status' => 'paid'
     ]);
 
