@@ -10,8 +10,9 @@
             <div class="col-md-4">
                 <div class="card shadow-sm h-100">
 
-                    <img src="{{ $fav->product->image ? asset('storage/'.$fav->product->image) : 'https://via.placeholder.com/400x250' }}"
-                         class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <img src="{{ $fav->product->image_url ?? ($fav->product->image ? asset('storage/'.$fav->product->image) : 'https://via.placeholder.com/800x400') }}"
+                    class="img-fluid rounded shadow-sm mb-3"
+                    style="height: 400px; width: 100%; object-fit: cover;">
 
                     <div class="card-body">
                         <h5 class="fw-bold">{{ $fav->product->title }}</h5>
