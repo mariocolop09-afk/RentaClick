@@ -11,15 +11,17 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::first();
+$user = User::where('email', 'owner@rentaclick.com')->first();
 
-        if (!$user) {
-            $user = User::create([
-                'name' => 'Demo User',
-                'email' => 'demo@demo.com',
-                'password' => bcrypt('password')
-            ]);
-        }
+if (!$user) {
+    $user = User::create([
+        'name' => 'Demo Owner',
+        'email' => 'owner@rentaclick.com',
+        'password' => bcrypt('password'),
+        'is_admin' => 1
+    ]);
+}
+        
 
         $categories = Category::all();
 
