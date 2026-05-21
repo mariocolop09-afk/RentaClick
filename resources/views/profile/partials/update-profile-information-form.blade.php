@@ -1,64 +1,216 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+
+    <header class="mb-4">
+        <h2 class="fw-bold fs-4">
+            Información del Perfil
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+        <p class="text-muted">
+            Actualiza la información de tu cuenta y datos personales.
         </p>
     </header>
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+    <form id="send-verification"
+          method="post"
+          action="{{ route('verification.send') }}">
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post"
+          action="{{ route('profile.update') }}"
+          class="mt-4"
+          enctype="multipart/form-data">
+
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        {{-- Nombre --}}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Nombre</label>
+
+            <input type="text"
+                   name="name"
+                   class="form-control"
+                   value="{{ old('name', $user->name) }}"
+                   required>
+
+            @error('name')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        {{-- Email --}}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Correo Electrónico</label>
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+            <input type="email"
+                   name="email"
+                   class="form-control"
+                   value="{{ old('email', $user->email) }}"
+                   required>
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
-                    </p>
+            @error('email')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
+        @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+
+            <div class="alert alert-warning">
+
+                Tu correo no está verificado.
+
+                <button form="send-verification"
+                        class="btn btn-sm btn-dark ms-2">
+                    Reenviar verificación
+                </button>
+
+            </div>
+
+            @if (session('status') === 'verification-link-sent')
+
+                <div class="alert alert-success">
+                    Se envió un nuevo enlace de verificación.
                 </div>
+
             @endif
+
+        @endif
+
+        <hr>
+
+        <h5 class="fw-bold mb-3">Información Personal</h5>
+
+        {{-- Teléfono --}}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Teléfono</label>
+
+            <input type="text"
+                   name="phone"
+                   class="form-control"
+                   value="{{ old('phone', auth()->user()->phone) }}">
+
+            @error('phone')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        {{-- Dirección --}}
+        <div class="mb-3">
+            <label class="form-label fw-bold">Dirección</label>
 
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
+            <input type="text"
+                   name="address"
+                   class="form-control"
+                   value="{{ old('address', auth()->user()->address) }}">
+
+            @error('address')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
+
+        {{-- DPI --}}
+        <div class="mb-3">
+            <label class="form-label fw-bold">DPI / Identificación</label>
+
+            <input type="text"
+                   name="dpi"
+                   class="form-control"
+                   value="{{ old('dpi', auth()->user()->dpi) }}">
+
+            @error('dpi')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <hr>
+
+        <h5 class="fw-bold mb-3">Foto de Perfil</h5>
+
+        @if(auth()->user()->profile_photo)
+
+            <div class="mb-3">
+                <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}"
+                     class="rounded-circle shadow-sm"
+                     width="120"
+                     height="120"
+                     style="object-fit: cover;">
+            </div>
+
+        @endif
+
+        <div class="mb-3">
+
+            <input type="file"
+                   name="profile_photo"
+                   class="form-control">
+
+            @error('profile_photo')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+
+        </div>
+
+        <hr>
+
+        <h5 class="fw-bold mb-3">Foto del DPI</h5>
+
+        @if(auth()->user()->dpi_photo)
+
+            <div class="mb-3">
+                <img src="{{ asset('storage/'.auth()->user()->dpi_photo) }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-width: 300px;">
+            </div>
+
+        @endif
+
+        <div class="mb-3">
+
+            <input type="file"
+                   name="dpi_photo"
+                   class="form-control">
+
+            @error('dpi_photo')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+
+        </div>
+
+        <hr>
+
+        <div class="mb-4">
+
+            <h5 class="fw-bold">Estado de Cuenta</h5>
+
+            @if(auth()->user()->is_verified)
+
+                <span class="badge bg-success">
+                    Usuario Verificado
+                </span>
+
+            @else
+
+                <span class="badge bg-secondary">
+                    Usuario No Verificado
+                </span>
+
+            @endif
+
+        </div>
+
+        <button class="btn btn-dark">
+            Guardar Cambios
+        </button>
+
+        @if (session('status') === 'profile-updated')
+
+            <span class="text-success ms-3">
+                Guardado correctamente.
+            </span>
+
+        @endif
+
     </form>
+
 </section>

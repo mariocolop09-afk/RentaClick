@@ -74,9 +74,23 @@
 
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            {{ auth()->user()->name }}
-                        </a>
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+
+    @if(auth()->user()->profile_photo)
+        <img src="{{ asset('storage/'.auth()->user()->profile_photo) }}"
+             width="35"
+             height="35"
+             class="rounded-circle me-2"
+             style="object-fit: cover;">
+    @endif
+
+    {{ auth()->user()->name }}
+
+    @if(auth()->user()->is_verified)
+        <span class="badge bg-success ms-2">Verificado</span>
+    @endif
+
+</a>
 
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
