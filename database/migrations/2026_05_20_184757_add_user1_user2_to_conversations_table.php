@@ -8,19 +8,7 @@ return new class extends Migration
 {
      public function up(): void
     {
-        Schema::table('conversations', function (Blueprint $table) {
 
-            $table->foreignId('user1_id')
-                ->nullable()
-                ->constrained('users')
-                ->onDelete('cascade');
-
-            $table->foreignId('user2_id')
-                ->nullable()
-                ->constrained('users')
-                ->onDelete('cascade');
-
-        });
     }
 
     public function down(): void

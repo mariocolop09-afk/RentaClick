@@ -48,6 +48,31 @@
                                         <button class="btn btn-sm btn-primary w-100">Finalizar</button>
                                     </form>
 
+                                    <form action="{{ route('rentals.releaseDeposit', $rental->id) }}"
+                                    method="POST"
+                                    class="mb-2">
+
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <button class="btn btn-success btn-sm w-100">
+                                    Liberar depósito
+                                    </button>
+
+                                    </form>
+
+                                    <form action="{{ route('rentals.retainDeposit', $rental->id) }}"
+                                    method="POST">
+
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <button class="btn btn-danger btn-sm w-100">
+                                    Retener depósito
+                                    </button>
+
+                                    </form>
+
                                     <form action="{{ route('rentals.cancel.owner', $rental->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')

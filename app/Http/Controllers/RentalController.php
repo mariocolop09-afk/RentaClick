@@ -84,6 +84,8 @@ class RentalController extends Controller
     }
     }
 
+    $deposit = $total * 0.5;
+
     Payment::create([
         'rental_id' => $rental->id,
         'payer_id' => auth()->id(),
@@ -97,8 +99,12 @@ class RentalController extends Controller
         'card_last4' => $cardLast4,
 
         'card_brand' => $cardBrand,
+        'deposit_amount' => $deposit,
+        'deposit_status' => 'authorized',
         'status' => 'paid'
     ]);
+
+    $totalAuthorized = $total + $deposit;
 
     Contract::create([
     'rental_id' => $rental->id,
@@ -191,5 +197,32 @@ public function cancelByOwner(Rental $rental)
     return back()->with('success', 'Alquiler cancelado.');
 }
 
+public function releaseDeposit(Rental $rental)
+{
+    if ($rental->product->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $payment = $rental->payment;
+
+    $payment->deposit_status = 'released';
+    $payment->save();
+
+    return back()->with('success', 'Depósito liberado correctamente.');
+}
+
+public function retainDeposit(Rental $rental)
+{
+    if ($rental->product->user_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $payment = $rental->payment;
+
+    $payment->deposit_status = 'retained';
+    $payment->save();
+
+    return back()->with('success', 'Depósito retenido.');
+}
 
 }

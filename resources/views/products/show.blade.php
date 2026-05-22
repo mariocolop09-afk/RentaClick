@@ -18,6 +18,14 @@
                 <p class="text-muted">{{ $product->description }}</p>
 
                 <p class="fs-4 fw-bold text-success">Q{{ $product->price_per_day }} / día</p>
+
+                <div class="alert alert-warning">
+
+                <strong>Depósito de garantía:</strong>
+
+                Se realizará una retención temporal para proteger al dueño del producto.
+
+                </div>
                 <!-- reseña -->
 
                                 @php
@@ -92,6 +100,27 @@
                             </div>
 
                             </div>
+
+
+                            <div class="card bg-light p-3 mb-3">
+
+                            <h6 class="fw-bold">Resumen de pago</h6>
+
+                            <p class="mb-1">
+                            Alquiler: Q{{ $product->price_per_day }} / día
+                            </p>
+
+                            <p class="mb-1">
+                            Depósito estimado:
+                            Q{{ $product->price_per_day * 0.5 }}
+                            </p>
+                            <hr>
+
+    <small class="text-muted">
+        El depósito se libera al devolver el producto correctamente.
+    </small>
+
+</div>
 
                         <button class="btn btn-primary w-100">
                             Alquilar

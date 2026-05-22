@@ -18,6 +18,8 @@ class Payment extends Model
         'card_name',
         'card_last4',
         'card_brand',
+        'deposit_amount',
+        'deposit_status',
     ];
 
     public function rental()

@@ -27,6 +27,26 @@
                             @else
                             💵 EFECTIVO
                             @endif
+
+                            <p class="mb-1">
+                            <strong>Depósito:</strong>
+                            ${{ $payment->deposit_amount }}
+                            </p>
+
+                            <p>
+                            <strong>Estado depósito:</strong>
+
+                            @if($payment->deposit_status == 'authorized')
+                            <span class="badge bg-warning text-dark">Retenido</span>
+
+                            @elseif($payment->deposit_status == 'released')
+                            <span class="badge bg-success">Liberado</span>
+
+                            @elseif($payment->deposit_status == 'retained')
+                            <span class="badge bg-danger">Retenido por daños</span>
+                            @endif
+                            </p>
+
                             <td>
                                 @if($payment->status == 'paid')
                                     <span class="badge bg-success">Pagado</span>

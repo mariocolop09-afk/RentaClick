@@ -28,6 +28,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 // Auth routes
 Route::middleware('auth')->group(function () {
 
+    //
+    Route::patch('/rentals/{rental}/release-deposit', [RentalController::class, 'releaseDeposit'])
+    ->name('rentals.releaseDeposit');
+
+    Route::patch('/rentals/{rental}/retain-deposit', [RentalController::class, 'retainDeposit'])
+    ->name('rentals.retainDeposit');
+
     // Contracts
     Route::get('/contracts', [ContractController::class, 'index'])->name('contracts.index');
     Route::get('/contracts/{contract}', [ContractController::class, 'show'])->name('contracts.show');
